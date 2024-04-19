@@ -1,11 +1,11 @@
 {
-    "posts": [
-        {
-            "title": "fetch json 적용 제목",
-            "likes": 1000,
-            "comments": 10000,
-            "views": 100000,
-            "createdDate": "1234-56-78"
-        }
-    ]
+  "posts": [
+    {
+      "title": "fetch json 적용 제목",
+      "likes": 1000,
+      "comments": 10000,
+      "views": 100000,
+      "createdDate": "1234-56-78"
+    }
+  ]
 }
