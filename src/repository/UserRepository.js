@@ -20,6 +20,19 @@ class UserRepository {
 
     throw new UserNotFoundError();
   }
+
+  saveUser(profileImagePath, email, password, nickname) {
+    this._storage.set(this._sequence, new User(profileImagePath, this._sequence, email, password, nickname));
+  
+    this._sequence++;
+
+    // TODO clear, 확인용
+    for (const [key, value] of this._storage) {
+      console.log(key, value);
+    }
+
+    return this._storage.get(this._sequence - 1);
+  }
 }
 
 module.exports = UserRepository;

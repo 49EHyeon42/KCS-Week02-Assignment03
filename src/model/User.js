@@ -1,9 +1,18 @@
 class User {
-  constructor(id, email, password, nickname) {
+  constructor(profileImagePath, id, email, password, nickname) {
+    this._profileImagePath = profileImagePath;
     this._id = id;
     this._email = email;
     this._password = password;
     this._nickname = nickname;
+  }
+
+  getProfileImagePath() {
+    return this._profileImagePath;
+  }
+
+  setProfileImagePath(profileImagePath) {
+    this._profileImagePath = profileImagePath;
   }
 
   getId() {
@@ -12,10 +21,6 @@ class User {
 
   getEmail() {
     return this._email;
-  }
-
-  setEmail(email) {
-    this._email = email;
   }
 
   getPassword() {
