@@ -9,9 +9,6 @@ const signUpController = new SignUpController();
 const router = express.Router();
 
 const storage = multer.diskStorage({
-    destination: (request, file, callback) => {
-        callback(null, './storage/profile-images');
-    },
     filename: (request, file, callback) => {
         callback(null, file.originalname);
     }
@@ -19,14 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post('/', upload.single('profile-image'), (request, response) => {
-    const imageFile = request.file;
-
-    if (!imageFile) {
-        return request.status(400).send('No image uploaded.');
-    }
-
-    response.sendFile(path.resolve(imageFile.path));
-});
+// TODO 유효성 검사 나중에 구현
+router.post('/', upload.single('profile-image'), signUpController.signUp);
 
 module.exports = router;
