@@ -1,6 +1,7 @@
 const express = require('express');
 
 const signInRouter = require('./src/router/signInRouter');
+const signUpRouter = require('./src/router/signUpRouter');
 
 const app = express();
 
@@ -10,6 +11,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 
 app.use('/api/sign-in', signInRouter);
+app.use('/api/sign-up', signUpRouter);
 
 app.get('/', (request, response) => {
   response.send('Hello, world!');
