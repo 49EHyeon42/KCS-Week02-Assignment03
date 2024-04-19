@@ -5,6 +5,6 @@ const signInController = new SignInController();
 
 const router = express.Router();
 
-router.get('/', signInController.signInEmailAndPassword);
+router.post('/', signInController.signInEmailAndPassword);
 
 module.exports = router;
