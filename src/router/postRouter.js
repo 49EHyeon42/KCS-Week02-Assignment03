@@ -8,6 +8,7 @@ const PostNotFoundError = require('../error/PostNotFoundError');
 const postController = new PostController();
 
 const router = express.Router();
+const commentRouter = require('./commentRouter');
 
 const storage = multer.diskStorage({
   filename: (request, file, callback) => {
@@ -80,5 +81,8 @@ router.delete(
   },
   globalErrorHandler
 );
+
+// 댓글 라우터 등록
+router.use('/:postId/comments', commentRouter);
 
 module.exports = router;
