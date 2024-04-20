@@ -30,6 +30,8 @@ const errorHandler = (error, request, response, next) => {
   response.status(status).json({ message: message });
 };
 
+router.get('/', postController.searchPost);
+
 // TODO: edit 대신 write 작성
 router.post(
   '/',

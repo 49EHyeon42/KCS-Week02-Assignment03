@@ -5,6 +5,10 @@ class PostController {
     this._postRepository = new PostRepository();
   }
 
+  searchPost = (request, response, next) => {
+    response.json(this._postRepository.findAllPost());
+  };
+
   writePost = (request, response, next) => {
     const postImage = request.file;
     // author는 인증, 인가 후 구현
