@@ -44,6 +44,18 @@ class PostController {
       next();
     }
   };
+
+  deletePost = (request, response, next) => {
+    const id = request.params.id;
+
+    try {
+      this._postRepository.deletePost(id);
+
+      response.sendStatus(200);
+    } catch (error) {
+      next();
+    }
+  };
 }
 
 module.exports = PostController;

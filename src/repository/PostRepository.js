@@ -57,6 +57,7 @@ class PostRepository {
 
     const foundPost = postJson.posts.find((post) => post.id == id);
 
+    // TODO 여기에 안옴, 수정 필요
     if (!foundPost) {
       throw new PostNotFoundError();
     }
@@ -77,6 +78,26 @@ class PostRepository {
     foundPost.postImagePath = postImagePath;
     foundPost.title = title;
     foundPost.content = content;
+
+    fs.writeFileSync(this._POST_JSON_PATH, JSON.stringify(postJson, null, 2));
+  }
+
+  deletePost(id) {
+    const postJson = JSON.parse(fs.readFileSync(this._POST_JSON_PATH));
+
+    const foundPost = postJson.posts.find((post) => post.id == id);
+
+    // TODO 여기에 안옴, 수정 필요
+    if (!foundPost) {
+      throw new PostNotFoundError();
+    }
+
+    // 기존 게시글 이미지 삭제
+    if (foundPost.postImagePath !== null) {
+      fs.unlinkSync(foundPost.postImagePath);
+    }
+
+    postJson.posts.splice(foundPost, 1);
 
     fs.writeFileSync(this._POST_JSON_PATH, JSON.stringify(postJson, null, 2));
   }

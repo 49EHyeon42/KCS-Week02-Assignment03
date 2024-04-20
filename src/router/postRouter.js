@@ -69,4 +69,17 @@ router.patch(
   globalErrorHandler
 );
 
+router.delete(
+  '/:id',
+  postController.deletePost,
+  (error, request, response, next) => {
+    if (error instanceof PostNotFoundError) {
+      response.status(error.status).json({ message: error.message });
+    } else {
+      next();
+    }
+  },
+  globalErrorHandler
+);
+
 module.exports = router;
