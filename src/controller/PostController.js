@@ -9,6 +9,18 @@ class PostController {
     response.json(this._postRepository.findAllPost());
   };
 
+  searchPostById = (request, response, next) => {
+    const id = request.params.id;
+
+    try {
+      response.json(this._postRepository.findPostById(id));
+    } catch (error) {
+      console.log('PostController: ', error.message);
+
+      next(error);
+    }
+  };
+
   writePost = (request, response, next) => {
     const postImage = request.file;
     // author는 인증, 인가 후 구현

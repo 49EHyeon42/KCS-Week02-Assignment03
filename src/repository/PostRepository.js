@@ -3,6 +3,8 @@ const path = require('path');
 
 const Post = require('../model/Post');
 
+const PostNotFoundError = require('../error/PostNotFoundError');
+
 class PostRepository {
   constructor() {
     this._POST_IMAGE_PATH = 'storage/post-images/';
@@ -11,6 +13,18 @@ class PostRepository {
 
   findAllPost() {
     return JSON.parse(fs.readFileSync(this._POST_JSON_PATH)).posts;
+  }
+
+  findPostById(id) {
+    const foundPost = JSON.parse(
+      fs.readFileSync(this._POST_JSON_PATH)
+    ).posts.find((post) => post.id == id);
+
+    if (foundPost) {
+      return foundPost;
+    }
+
+    throw new PostNotFoundError();
   }
 
   savePost(author, postImage, title, content) {

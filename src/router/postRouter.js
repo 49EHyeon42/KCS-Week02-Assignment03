@@ -31,6 +31,7 @@ const errorHandler = (error, request, response, next) => {
 };
 
 router.get('/', postController.searchPost);
+router.get('/:id', postController.searchPostById);
 
 // TODO: edit 대신 write 작성
 router.post(
