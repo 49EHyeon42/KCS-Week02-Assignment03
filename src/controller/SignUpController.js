@@ -1,6 +1,3 @@
-const fs = require('fs');
-const path = require('path');
-
 const UserRepository = require('../repository/UserRepository');
 
 class SignUpController {
@@ -12,11 +9,7 @@ class SignUpController {
     const profileImage = request.file;
     const { email, password, nickname } = request.body;
 
-    const profileImagePath = `storage/profile-images/${email}${path.extname(profileImage.originalname)}`;
-
-    this._userRepository.saveUser(profileImagePath, email, password, nickname);
-
-    fs.renameSync(profileImage.path, profileImagePath);
+    this._userRepository.saveUser(profileImage, email, password, nickname);
 
     response.sendStatus(200);
   };
