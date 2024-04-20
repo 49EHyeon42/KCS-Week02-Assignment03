@@ -53,4 +53,20 @@ router.post(
   globalErrorHandler
 );
 
+router.patch(
+  '/:id',
+  upload.single('post-image'),
+  postController.editPost,
+  (error, request, response, next) => {
+    if (error instanceof multer.MulterError) {
+      response.status(400).json({ message: 'ONLY_ONE_IMAGE' });
+    } else if (error instanceof PostNotFoundError) {
+      response.status(error.status).json({ message: error.message });
+    } else {
+      next();
+    }
+  },
+  globalErrorHandler
+);
+
 module.exports = router;

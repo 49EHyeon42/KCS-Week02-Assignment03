@@ -30,6 +30,20 @@ class PostController {
 
     response.sendStatus(200);
   };
+
+  editPost = (request, response, next) => {
+    const id = request.params.id;
+    const postImage = request.file;
+    const { title, content } = request.body;
+
+    try {
+      this._postRepository.updatePost(id, postImage, title, content);
+
+      response.sendStatus(200);
+    } catch (error) {
+      next();
+    }
+  };
 }
 
 module.exports = PostController;
