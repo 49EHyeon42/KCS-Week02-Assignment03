@@ -10,20 +10,13 @@ class UserRepository {
   constructor() {
     this._PROFILE_IMAGE_PATH = 'storage/profile-images/';
     this._USER_JSON_PATH = 'storage/user.json';
-
-    // TODO: findUserIdByEmailAndPassword 수정 후 삭제
-    this._storage = new Map();
-    this._sequence = 0;
   }
 
-  findUserIdByEmailAndPassword(email, password) {
-    for (const [key, value] of this._storage) {
-      if (value.email === email && value.password && password) {
-        // TODO clear
-        console.log('email: ', email, ' password: ', password);
+  findUserByEmailAndPassword(email, password) {
+    const foundUser = JSON.parse(fs.readFileSync(this._USER_JSON_PATH)).users.find(user => user.email == email && user.password == password);
 
-        return key;
-      }
+    if (foundUser) {
+      return foundUser;
     }
 
     throw new UserNotFoundError();
@@ -46,8 +39,6 @@ class UserRepository {
     userJson.users.push(new User(profileImagePath, email, password, nickname).toJson());
 
     fs.writeFileSync(this._USER_JSON_PATH, JSON.stringify(userJson, null, 2));
-  
-    this._sequence++;
   }
 
   _findUserByEmail(email) {

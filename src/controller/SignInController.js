@@ -8,11 +8,8 @@ class SignInController {
   signInEmailAndPassword = (request, response, next) => {
     const { email, password } = request.body;
 
-    // TODO clear
-    console.log('email: ', email, ' password: ', password);
-
     try {
-      this._userRepository.findUserIdByEmailAndPassword(email, password);
+      this._userRepository.findUserByEmailAndPassword(email, password);
 
       response.sendStatus(200);
     } catch (error) {
