@@ -15,8 +15,22 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+const errorHandler = (error, request, response, next) => {
+    let status;
+    let message;
+  
+    if (error instanceof multer.MulterError) {
+      status = 400;
+      message = 'ONLY_SINGLE_IMAGE';
+    } else {
+      status = 500;
+      message = 'SERVER_ERROR';
+    }
+  
+    response.status(status).json({ message: message });
+  };
+
 // TODO: edit 대신 write 작성
-// TODO: 만약 파일이 2개 이상 들어오면, MulterError: Unexpected field 발생, 에러 처리 필요
-router.post('/', upload.single('post-image'), postController.writePost);
+router.post('/', upload.single('post-image'), postController.writePost, errorHandler);
 
 module.exports = router;
