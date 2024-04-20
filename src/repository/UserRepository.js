@@ -8,6 +8,10 @@ const DuplicateEmailError = require('../error/DuplicateEmailError');
 
 class UserRepository {
   constructor() {
+    this._PROFILE_IMAGE_PATH = 'storage/profile-images/';
+    this._USER_JSON_PATH = 'storage/user.json';
+
+    // TODO: findUserIdByEmailAndPassword 수정 후 삭제
     this._storage = new Map();
     this._sequence = 0;
   }
@@ -32,22 +36,22 @@ class UserRepository {
     }
 
     // 프로필 사진 저장
-    const profileImagePath = `storage/profile-images/${email}${path.extname(profileImage.originalname)}`;
+    const profileImagePath = `${this._PROFILE_IMAGE_PATH}${email}${path.extname(profileImage.originalname)}`;
     
     fs.renameSync(profileImage.path, profileImagePath);
 
     // 회원 정보 저장
-    const userJson = JSON.parse(fs.readFileSync('storage/user.json'));
+    const userJson = JSON.parse(fs.readFileSync(this._USER_JSON_PATH));
 
     userJson.users.push(new User(profileImagePath, email, password, nickname).toJson());
 
-    fs.writeFileSync('storage/user.json', JSON.stringify(userJson, null, 2));
+    fs.writeFileSync(this._USER_JSON_PATH, JSON.stringify(userJson, null, 2));
   
     this._sequence++;
   }
 
   _findUserByEmail(email) {
-    return JSON.parse(fs.readFileSync('storage/user.json')).users.find(user => user.email === email);
+    return JSON.parse(fs.readFileSync(this._USER_JSON_PATH)).users.find(user => user.email === email);
   }
 }
 
