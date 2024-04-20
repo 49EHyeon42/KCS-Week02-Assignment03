@@ -39,7 +39,7 @@ class User {
       profileImagePath: this._profileImagePath,
       email: this._email,
       password: this._password,
-      nickname: this._nickname
+      nickname: this._nickname,
     };
   }
 }

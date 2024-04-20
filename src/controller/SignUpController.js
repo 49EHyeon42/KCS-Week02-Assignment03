@@ -13,7 +13,7 @@ class SignUpController {
       this._userRepository.saveUser(profileImage, email, password, nickname);
 
       response.sendStatus(200);
-    } catch(error) {
+    } catch (error) {
       console.log('SignUpController: ', error.message);
 
       next(error);

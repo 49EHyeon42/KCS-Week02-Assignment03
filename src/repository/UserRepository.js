@@ -13,7 +13,9 @@ class UserRepository {
   }
 
   findUserByEmailAndPassword(email, password) {
-    const foundUser = JSON.parse(fs.readFileSync(this._USER_JSON_PATH)).users.find(user => user.email == email && user.password == password);
+    const foundUser = JSON.parse(
+      fs.readFileSync(this._USER_JSON_PATH)
+    ).users.find((user) => user.email == email && user.password == password);
 
     if (foundUser) {
       return foundUser;
@@ -30,19 +32,23 @@ class UserRepository {
 
     // 프로필 사진 저장
     const profileImagePath = `${this._PROFILE_IMAGE_PATH}${email}${path.extname(profileImage.originalname)}`;
-    
+
     fs.renameSync(profileImage.path, profileImagePath);
 
     // 회원 정보 저장
     const userJson = JSON.parse(fs.readFileSync(this._USER_JSON_PATH));
 
-    userJson.users.push(new User(profileImagePath, email, password, nickname).toJson());
+    userJson.users.push(
+      new User(profileImagePath, email, password, nickname).toJson()
+    );
 
     fs.writeFileSync(this._USER_JSON_PATH, JSON.stringify(userJson, null, 2));
   }
 
   _findUserByEmail(email) {
-    return JSON.parse(fs.readFileSync(this._USER_JSON_PATH)).users.find(user => user.email === email);
+    return JSON.parse(fs.readFileSync(this._USER_JSON_PATH)).users.find(
+      (user) => user.email === email
+    );
   }
 }
 
