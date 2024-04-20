@@ -1,9 +1,14 @@
 class Post {
-  constructor(author, postImagePath, title, content) {
+  constructor(id, author, postImagePath, title, content) {
+    this._id = id;
     this._author = author;
     this._postImagePath = postImagePath;
     this._title = title;
     this._content = content;
+  }
+
+  getId() {
+    return this._id;
   }
 
   getAuthor() {
@@ -36,6 +41,7 @@ class Post {
 
   toJson() {
     return {
+      id: this._id,
       author: this._author,
       postImagePath: this._postImagePath,
       title: this._title,

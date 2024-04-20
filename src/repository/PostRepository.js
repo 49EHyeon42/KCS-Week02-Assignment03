@@ -14,8 +14,7 @@ class PostRepository {
   }
 
   savePost(author, postImage, title, content) {
-    // post 사진 저장
-    // TODO: 일단 title 유니크로 고정, 나중에 id 받으면 변경
+    // 사진 저장
     let postImagePath = null;
 
     if (postImage) {
@@ -24,10 +23,18 @@ class PostRepository {
       fs.renameSync(postImage.path, postImagePath);
     }
 
-    // post 저장
+    // 나머지 저장
     const postJson = JSON.parse(fs.readFileSync(this._POST_JSON_PATH));
 
-    postJson.posts.push(new Post(author, postImagePath, title, content));
+    postJson.posts.push(
+      new Post(
+        postJson.sequence++,
+        author,
+        postImagePath,
+        title,
+        content
+      ).toJson()
+    );
 
     fs.writeFileSync(this._POST_JSON_PATH, JSON.stringify(postJson, null, 2));
   }
