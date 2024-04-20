@@ -23,7 +23,7 @@ const errorHandler = (error, request, response, next) => {
 
   if (error instanceof multer.MulterError) {
     status = 400;
-    message = 'ONLY_SINGLE_IMAGE';
+    message = 'ONLY_ONE_IMAGE';
   } else if (error instanceof DuplicateEmailError) {
     status = error.statusCode;
     message = error.message;
