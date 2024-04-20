@@ -5,12 +5,11 @@ class PostController {
     this._postRepository = new PostRepository();
   }
 
-  searchPost = (request, response, next) => {
+  searchAllPost = (request, response, next) => {
     response.json(this._postRepository.findAllPost());
   };
 
-  // TODO: 함수명 변경
-  searchPostById = (request, response, next) => {
+  searchOnePost = (request, response, next) => {
     const id = request.params.id;
 
     try {
@@ -38,7 +37,7 @@ class PostController {
     const { title, content } = request.body;
 
     try {
-      this._postRepository.updatePost(id, postImage, title, content);
+      this._postRepository.updatePostById(id, postImage, title, content);
 
       response.sendStatus(200);
     } catch (error) {
@@ -50,7 +49,7 @@ class PostController {
     const id = request.params.id;
 
     try {
-      this._postRepository.deletePost(id);
+      this._postRepository.deletePostById(id);
 
       response.sendStatus(200);
     } catch (error) {

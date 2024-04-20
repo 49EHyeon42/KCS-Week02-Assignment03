@@ -52,8 +52,7 @@ class PostRepository {
     fs.writeFileSync(this._POST_JSON_PATH, JSON.stringify(postJson, null, 2));
   }
 
-  // TODO: 함수명 변경
-  updatePost(id, postImage, title, content) {
+  updatePostById(id, postImage, title, content) {
     const postJson = JSON.parse(fs.readFileSync(this._POST_JSON_PATH));
 
     const foundPost = postJson.posts.find((post) => post.id == id);
@@ -82,8 +81,7 @@ class PostRepository {
     fs.writeFileSync(this._POST_JSON_PATH, JSON.stringify(postJson, null, 2));
   }
 
-  // TODO: 함수명 변경
-  deletePost(id) {
+  deletePostById(id) {
     const postJson = JSON.parse(fs.readFileSync(this._POST_JSON_PATH));
 
     const foundPost = postJson.posts.find((post) => post.id == id);

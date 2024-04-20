@@ -23,11 +23,11 @@ const globalErrorHandler = (error, request, response, next) => {
   response.status(500).json({ message: 'SERVER_ERROR' });
 };
 
-router.get('/', postController.searchPost);
+router.get('/', postController.searchAllPost);
 
 router.get(
   '/:id',
-  postController.searchPostById,
+  postController.searchOnePost,
   (error, request, response, next) => {
     if (error instanceof PostNotFoundError) {
       response.status(error.status).json({ message: error.message });
