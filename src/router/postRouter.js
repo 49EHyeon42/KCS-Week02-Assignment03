@@ -16,21 +16,26 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 const errorHandler = (error, request, response, next) => {
-    let status;
-    let message;
-  
-    if (error instanceof multer.MulterError) {
-      status = 400;
-      message = 'ONLY_SINGLE_IMAGE';
-    } else {
-      status = 500;
-      message = 'SERVER_ERROR';
-    }
-  
-    response.status(status).json({ message: message });
-  };
+  let status;
+  let message;
+
+  if (error instanceof multer.MulterError) {
+    status = 400;
+    message = 'ONLY_ONE_IMAGE';
+  } else {
+    status = 500;
+    message = 'SERVER_ERROR';
+  }
+
+  response.status(status).json({ message: message });
+};
 
 // TODO: edit 대신 write 작성
-router.post('/', upload.single('post-image'), postController.writePost, errorHandler);
+router.post(
+  '/',
+  upload.single('post-image'),
+  postController.writePost,
+  errorHandler
+);
 
 module.exports = router;
