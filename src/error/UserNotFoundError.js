@@ -3,7 +3,7 @@ class UserNotFoundError extends Error {
     const message = 'USER_NOT_FOUND';
 
     super(message);
-    this.statusCode = 404;
+    this.status = 404;
   }
 }
 

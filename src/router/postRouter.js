@@ -30,7 +30,7 @@ router.get(
   postController.searchPostById,
   (error, request, response, next) => {
     if (error instanceof PostNotFoundError) {
-      response.status(error.statusCode).json({ message: error.message });
+      response.status(error.status).json({ message: error.message });
     } else {
       next();
     }

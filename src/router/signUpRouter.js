@@ -25,7 +25,7 @@ const errorHandler = (error, request, response, next) => {
     status = 400;
     message = 'ONLY_ONE_IMAGE';
   } else if (error instanceof DuplicateEmailError) {
-    status = error.statusCode;
+    status = error.status;
     message = error.message;
   } else {
     status = 500;

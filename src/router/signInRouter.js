@@ -10,7 +10,7 @@ const errorHandler = (error, request, response, next) => {
   let message;
 
   if (error instanceof UserNotFoundError) {
-    status = error.statusCode;
+    status = error.status;
     message = error.message;
   } else {
     status = 500;

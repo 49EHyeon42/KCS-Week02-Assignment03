@@ -3,7 +3,7 @@ class DuplicateEmailError extends Error {
     const message = 'DUPLICATE_EMAIL';
 
     super(message);
-    this.statusCode = 409;
+    this.status = 409;
   }
 }
 
