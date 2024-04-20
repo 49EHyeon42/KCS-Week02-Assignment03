@@ -24,11 +24,11 @@ function validteAll() {
 const signUpButton = document.getElementById('sign-up-button');
 
 // (임시) 로그인 시 로그인 페이지로 이동
-signUpButton.addEventListener('click', () => {
-  if (validteAll()) {
-    window.location.href = 'sign-in.html';
-  }
-});
+// signUpButton.addEventListener('click', () => {
+//   if (validteAll()) {
+//     window.location.href = 'sign-in.html';
+//   }
+// });
 
 function changeButtonColor() {
   signUpButton.style.backgroundColor = validteAll() ? '#7F6AEE' : '#ACA0EB';

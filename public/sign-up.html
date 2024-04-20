@@ -22,7 +22,7 @@
       <section class="warp">
         <p class="content-title">회원가입</p>
 
-        <form>
+        <form action="/api/sign-up" method="post" enctype="multipart/form-data">
           <p class="form-label">프로필 사진</p>
           <p class="helper-text" id="profile-image-helper-text">
             * 프로필 사진을 추가해주세요.
@@ -88,8 +88,7 @@
             * 닉네임을 입력해주세요.
           </p>
 
-          <!-- 임시로 submit에서 button -->
-          <input id="sign-up-button" type="button" value="회원가입" />
+          <input id="sign-up-button" type="submit" value="회원가입" />
         </form>
 
         <a class="move-sign-in-text" href="sign-in.html">로그인하러 가기</a>
