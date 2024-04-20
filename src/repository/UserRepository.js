@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const User = require('../model/User');
 
 const UserNotFoundError = require('../error/UserNotFoundError');
@@ -22,16 +24,13 @@ class UserRepository {
   }
 
   saveUser(profileImagePath, email, password, nickname) {
-    this._storage.set(this._sequence, new User(profileImagePath, this._sequence, email, password, nickname));
+    const userJson = JSON.parse(fs.readFileSync('storage/user.json'));
+
+    userJson.users.push(new User(this._sequence, profileImagePath, email, password, nickname).toJson());
+
+    fs.writeFileSync('storage/user.json', JSON.stringify(userJson, null, 2));
   
     this._sequence++;
-
-    // TODO clear, 확인용
-    for (const [key, value] of this._storage) {
-      console.log(key, value);
-    }
-
-    return this._storage.get(this._sequence - 1);
   }
 }
 

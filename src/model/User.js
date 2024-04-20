@@ -1,7 +1,6 @@
 class User {
-  constructor(profileImagePath, id, email, password, nickname) {
+  constructor(profileImagePath, email, password, nickname) {
     this._profileImagePath = profileImagePath;
-    this._id = id;
     this._email = email;
     this._password = password;
     this._nickname = nickname;
@@ -13,10 +12,6 @@ class User {
 
   setProfileImagePath(profileImagePath) {
     this._profileImagePath = profileImagePath;
-  }
-
-  getId() {
-    return this._id;
   }
 
   getEmail() {
@@ -37,6 +32,15 @@ class User {
 
   setNickname(nickname) {
     this._nickname = nickname;
+  }
+
+  toJson() {
+    return {
+      profileImagePath: this._profileImagePath,
+      email: this._email,
+      password: this._password,
+      nickname: this._nickname
+    };
   }
 }
 
