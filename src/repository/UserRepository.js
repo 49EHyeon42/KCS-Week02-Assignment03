@@ -3,6 +3,7 @@ const fs = require('fs');
 const User = require('../model/User');
 
 const UserNotFoundError = require('../error/UserNotFoundError');
+const DuplicateEmailError = require('../error/DuplicateEmailError');
 
 class UserRepository {
   constructor() {
@@ -24,13 +25,21 @@ class UserRepository {
   }
 
   saveUser(profileImagePath, email, password, nickname) {
+    if (this._findUserByEmail(email)) {
+      throw new DuplicateEmailError();
+    }
+
     const userJson = JSON.parse(fs.readFileSync('storage/user.json'));
 
-    userJson.users.push(new User(this._sequence, profileImagePath, email, password, nickname).toJson());
+    userJson.users.push(new User(profileImagePath, email, password, nickname).toJson());
 
     fs.writeFileSync('storage/user.json', JSON.stringify(userJson, null, 2));
   
     this._sequence++;
+  }
+
+  _findUserByEmail(email) {
+    return JSON.parse(fs.readFileSync('storage/user.json')).users.find(user => user.email === email);
   }
 }
 
