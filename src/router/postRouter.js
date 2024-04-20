@@ -17,25 +17,25 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+const globalErrorHandler = (error, request, response, next) => {
+  console.log(error.message);
+
+  response.status(500).json({ message: 'SERVER_ERROR' });
+};
+
 router.get('/', postController.searchPost);
 
 router.get(
   '/:id',
   postController.searchPostById,
   (error, request, response, next) => {
-    let status;
-    let message;
-
     if (error instanceof PostNotFoundError) {
-      status = error.statusCode;
-      message = error.message;
+      response.status(error.statusCode).json({ message: error.message });
     } else {
-      status = 500;
-      message = 'SERVER_ERROR';
+      next();
     }
-
-    response.status(status).json({ message: message });
-  }
+  },
+  globalErrorHandler
 );
 
 // TODO: edit 대신 write 작성
@@ -44,19 +44,13 @@ router.post(
   upload.single('post-image'),
   postController.writePost,
   (error, request, response, next) => {
-    let status;
-    let message;
-
     if (error instanceof multer.MulterError) {
-      status = 400;
-      message = 'ONLY_ONE_IMAGE';
+      response.status(400).json({ message: 'ONLY_ONE_IMAGE' });
     } else {
-      status = 500;
-      message = 'SERVER_ERROR';
+      next();
     }
-
-    response.status(status).json({ message: message });
-  }
+  },
+  globalErrorHandler
 );
 
 module.exports = router;
