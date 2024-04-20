@@ -28,17 +28,16 @@ class PostRepository {
   }
 
   savePost(author, postImage, title, content) {
+    const postJson = JSON.parse(fs.readFileSync(this._POST_JSON_PATH));
+
     // 사진 저장
     let postImagePath = null;
 
     if (postImage) {
-      postImagePath = `${this._POST_IMAGE_PATH}${title}${path.extname(postImage.originalname)}`;
+      postImagePath = `${this._POST_IMAGE_PATH}${postJson.sequence}${path.extname(postImage.originalname)}`;
 
       fs.renameSync(postImage.path, postImagePath);
     }
-
-    // 나머지 저장
-    const postJson = JSON.parse(fs.readFileSync(this._POST_JSON_PATH));
 
     postJson.posts.push(
       new Post(
