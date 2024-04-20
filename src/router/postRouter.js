@@ -38,7 +38,6 @@ router.get(
   globalErrorHandler
 );
 
-// TODO: edit 대신 write 작성
 router.post(
   '/',
   upload.single('post-image'),

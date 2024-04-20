@@ -9,6 +9,7 @@ class PostController {
     response.json(this._postRepository.findAllPost());
   };
 
+  // TODO: 함수명 변경
   searchPostById = (request, response, next) => {
     const id = request.params.id;
 
@@ -41,7 +42,7 @@ class PostController {
 
       response.sendStatus(200);
     } catch (error) {
-      next();
+      next(error);
     }
   };
 
@@ -53,7 +54,7 @@ class PostController {
 
       response.sendStatus(200);
     } catch (error) {
-      next();
+      next(error);
     }
   };
 }

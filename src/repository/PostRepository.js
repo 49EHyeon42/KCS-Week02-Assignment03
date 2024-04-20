@@ -52,12 +52,12 @@ class PostRepository {
     fs.writeFileSync(this._POST_JSON_PATH, JSON.stringify(postJson, null, 2));
   }
 
+  // TODO: 함수명 변경
   updatePost(id, postImage, title, content) {
     const postJson = JSON.parse(fs.readFileSync(this._POST_JSON_PATH));
 
     const foundPost = postJson.posts.find((post) => post.id == id);
 
-    // TODO 여기에 안옴, 수정 필요
     if (!foundPost) {
       throw new PostNotFoundError();
     }
@@ -82,12 +82,12 @@ class PostRepository {
     fs.writeFileSync(this._POST_JSON_PATH, JSON.stringify(postJson, null, 2));
   }
 
+  // TODO: 함수명 변경
   deletePost(id) {
     const postJson = JSON.parse(fs.readFileSync(this._POST_JSON_PATH));
 
     const foundPost = postJson.posts.find((post) => post.id == id);
 
-    // TODO 여기에 안옴, 수정 필요
     if (!foundPost) {
       throw new PostNotFoundError();
     }
