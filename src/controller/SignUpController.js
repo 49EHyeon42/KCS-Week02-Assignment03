@@ -9,9 +9,15 @@ class SignUpController {
     const profileImage = request.file;
     const { email, password, nickname } = request.body;
 
-    this._userRepository.saveUser(profileImage, email, password, nickname);
+    try {
+      this._userRepository.saveUser(profileImage, email, password, nickname);
 
-    response.sendStatus(200);
+      response.sendStatus(200);
+    } catch(error) {
+      console.log('SignUpController: ', error.message);
+
+      next(error);
+    }
   };
 }
 

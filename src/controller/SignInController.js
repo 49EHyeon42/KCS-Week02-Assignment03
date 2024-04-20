@@ -5,7 +5,7 @@ class SignInController {
     this._userRepository = new UserRepository();
   }
 
-  signInEmailAndPassword = (request, response, next) => {
+  signIn = (request, response, next) => {
     const { email, password } = request.body;
 
     try {
@@ -13,11 +13,9 @@ class SignInController {
 
       response.sendStatus(200);
     } catch (error) {
-      // TODO clear
       console.log('SignInController: ', error.message);
 
-      // next(error);
-      response.sendStatus(500);
+      next(error);
     }
   };
 }
