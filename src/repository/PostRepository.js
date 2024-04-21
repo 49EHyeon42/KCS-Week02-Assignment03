@@ -84,18 +84,20 @@ class PostRepository {
   deletePostById(id) {
     const postJson = JSON.parse(fs.readFileSync(this._POST_JSON_PATH));
 
-    const foundPost = postJson.posts.find((post) => post.id == id);
+    const foundPostId = postJson.posts.findIndex((post) => post.id == id);
 
-    if (!foundPost) {
+    if (foundPostId === -1) {
       throw new PostNotFoundError();
     }
+
+    const foundPost = postJson.posts[foundPostId];
 
     // 기존 게시글 이미지 삭제
     if (foundPost.postImagePath !== null) {
       fs.unlinkSync(foundPost.postImagePath);
     }
 
-    postJson.posts.splice(foundPost, 1);
+    postJson.posts.splice(foundPostId, 1);
 
     fs.writeFileSync(this._POST_JSON_PATH, JSON.stringify(postJson, null, 2));
   }
