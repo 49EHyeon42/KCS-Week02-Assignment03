@@ -1,8 +1,10 @@
-const CommentNotFoundError = require('../../error/CommentNotFoundError');
+const InvalidCommentError = require('../../error/InvalidCommentError');
 const PostNotFoundError = require('../../error/PostNotFoundError');
+const CommentNotFoundError = require('../../error/CommentNotFoundError');
 
 const getErrorDetails = (error) => {
   if (
+    error instanceof InvalidCommentError ||
     error instanceof PostNotFoundError ||
     error instanceof CommentNotFoundError
   ) {
