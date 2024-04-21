@@ -1,6 +1,7 @@
 const InvalidProfileImageError = require('../../error/InvalidProfileImageError');
 const InvalidEmailError = require('../../error/InvalidEmailError');
 const InvalidPasswordError = require('../../error/InvalidPasswordError');
+const InvalidNicknameError = require('../../error/InvalidNicknameError');
 const DuplicateEmailError = require('../../error/DuplicateEmailError');
 const DuplicateNicknameError = require('../../error/DuplicateNicknameError');
 
@@ -9,6 +10,7 @@ const getErrorDetails = (error) => {
     error instanceof InvalidProfileImageError ||
     error instanceof InvalidEmailError ||
     error instanceof InvalidPasswordError ||
+    error instanceof InvalidNicknameError ||
     error instanceof DuplicateEmailError ||
     error instanceof DuplicateNicknameError
   ) {
