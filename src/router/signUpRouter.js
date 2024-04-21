@@ -4,8 +4,10 @@ const multer = require('multer');
 const SignUpController = require('../controller/SignUpController');
 
 const validateEmail = require('./validate/validateEmail');
+const validatePassword = require('./validate/validatePassword');
 
 const InvalidEmailError = require('../error/InvalidEmailError');
+const InvalidPasswordError = require('../error/InvalidPasswordError');
 const DuplicateEmailError = require('../error/DuplicateEmailError');
 const DuplicateNicknameError = require('../error/DuplicateNicknameError');
 
@@ -32,6 +34,7 @@ const getErrorDetails = (error) => {
     return { status: 400, message: 'ONLY_ONE_IMAGE' };
   } else if (
     error instanceof InvalidEmailError ||
+    error instanceof InvalidPasswordError ||
     error instanceof DuplicateEmailError ||
     error instanceof DuplicateNicknameError
   ) {
@@ -43,12 +46,12 @@ const getErrorDetails = (error) => {
   return { status: 500, message: 'SERVER_ERROR' };
 };
 
-// TODO 비밀번호 유효성 검사 구현
 // TODO 이미지가 없는 경우 에러 처리 필요
 router.post(
   '/',
   upload.single('profile-image'),
   validateEmail,
+  validatePassword,
   signUpController.signUp,
   globalPostErrorHandler
 );
