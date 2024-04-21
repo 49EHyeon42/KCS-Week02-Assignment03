@@ -15,8 +15,6 @@ class PostController {
     try {
       response.json(this._postRepository.findPostById(id));
     } catch (error) {
-      console.log('PostController: ', error.message);
-
       next(error);
     }
   };

@@ -30,6 +30,9 @@ const getErrorDetails = (error) => {
   } else if (error instanceof PostNotFoundError) {
     return { status: error.status, message: error.message };
   }
+
+  console.error(error);
+
   return { status: 500, message: 'SERVER_ERROR' };
 };
 

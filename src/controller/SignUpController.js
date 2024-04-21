@@ -14,8 +14,6 @@ class SignUpController {
 
       response.sendStatus(200);
     } catch (error) {
-      console.log('SignUpController: ', error.message);
-
       next(error);
     }
   };

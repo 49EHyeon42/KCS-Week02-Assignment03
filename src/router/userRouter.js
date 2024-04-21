@@ -25,16 +25,16 @@ const globalCommentErrorHandler = (error, request, response, next) => {
 };
 
 const getErrorDetails = (error) => {
-  if (
+  if (error instanceof multer.MulterError) {
+    return { status: 400, message: 'ONLY_ONE_IMAGE' };
+  } else if (
     error instanceof UserNotFoundError ||
     error instanceof DuplicateNicknameError
   ) {
     return { status: error.status, message: error.message };
-  } else if (error instanceof multer.MulterError) {
-    return { status: 400, message: 'ONLY_ONE_IMAGE' };
   }
 
-  console.log(error);
+  console.error(error);
 
   return { status: 500, message: 'SERVER_ERROR' };
 };

@@ -16,10 +16,16 @@ const globalCommentErrorHandler = (error, request, response, next) => {
 };
 
 const getErrorDetails = (error) => {
-  return error instanceof PostNotFoundError ||
+  if (
+    error instanceof PostNotFoundError ||
     error instanceof CommentNotFoundError
-    ? { status: error.status, message: error.message }
-    : { status: 500, message: 'SERVER_ERROR' };
+  ) {
+    return { status: error.status, message: error.message };
+  }
+
+  console.error(error);
+
+  return { status: 500, message: 'SERVER_ERROR' };
 };
 
 router.get('/', commentController.searchComment, globalCommentErrorHandler);

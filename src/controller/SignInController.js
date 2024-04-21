@@ -13,8 +13,6 @@ class SignInController {
 
       response.sendStatus(200);
     } catch (error) {
-      console.log('SignInController: ', error.message);
-
       next(error);
     }
   };
