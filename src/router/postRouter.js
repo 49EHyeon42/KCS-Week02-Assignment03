@@ -1,22 +1,16 @@
 const express = require('express');
-const multer = require('multer');
 
 const PostController = require('../controller/PostController');
 
+const validatePostImage = require('./validate/validatePostImage');
+
+const InvalidPostImageError = require('../error/InvalidPostImageError');
 const PostNotFoundError = require('../error/PostNotFoundError');
 
 const postController = new PostController();
 
 const router = express.Router();
 const commentRouter = require('./commentRouter');
-
-const storage = multer.diskStorage({
-  filename: (request, file, callback) => {
-    callback(null, file.originalname);
-  },
-});
-
-const upload = multer({ storage });
 
 const globalPostErrorHandler = (error, request, response, next) => {
   const { status, message } = getErrorDetails(error);
@@ -25,9 +19,10 @@ const globalPostErrorHandler = (error, request, response, next) => {
 };
 
 const getErrorDetails = (error) => {
-  if (error instanceof multer.MulterError) {
-    return { status: 400, message: 'ONLY_ONE_IMAGE' };
-  } else if (error instanceof PostNotFoundError) {
+  if (
+    error instanceof InvalidPostImageError ||
+    error instanceof PostNotFoundError
+  ) {
     return { status: error.status, message: error.message };
   }
 
@@ -42,14 +37,14 @@ router.get('/:id', postController.searchOnePost, globalPostErrorHandler);
 
 router.post(
   '/',
-  upload.single('post-image'),
+  validatePostImage,
   postController.writePost,
   globalPostErrorHandler
 );
 
 router.patch(
   '/:id',
-  upload.single('post-image'),
+  validatePostImage,
   postController.editPost,
   globalPostErrorHandler
 );
