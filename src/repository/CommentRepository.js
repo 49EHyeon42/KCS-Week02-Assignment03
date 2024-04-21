@@ -61,15 +61,15 @@ class CommentRepository {
 
     const commentJson = JSON.parse(fs.readFileSync(this._COMMENT_JSON_PATH));
 
-    const foundComment = commentJson.comments.find(
-      (comment) => comment.id == id && comment.postId == comment.postId
+    const foundCommentId = commentJson.comments.findIndex(
+      (comment) => comment.id == id
     );
 
-    if (!foundComment) {
+    if (foundCommentId === -1) {
       throw new CommentNotFoundError();
     }
 
-    commentJson.comments.splice(foundComment, 1);
+    commentJson.comments.splice(foundCommentId, 1);
 
     fs.writeFileSync(
       this._COMMENT_JSON_PATH,
