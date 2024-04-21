@@ -57,4 +57,4 @@ class CommentController {
   };
 }
 
-module.exports = CommentRepository;
+module.exports = CommentController;
