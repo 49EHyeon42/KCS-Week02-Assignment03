@@ -18,69 +18,40 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-const globalErrorHandler = (error, request, response, next) => {
-  console.log(error.message);
+const globalPostErrorHandler = (error, request, response, next) => {
+  const { status, message } = getErrorDetails(error);
 
-  response.status(500).json({ message: 'SERVER_ERROR' });
+  response.status(status).json({ message });
+};
+
+const getErrorDetails = (error) => {
+  if (error instanceof multer.MulterError) {
+    return { status: 400, message: 'ONLY_ONE_IMAGE' };
+  } else if (error instanceof PostNotFoundError) {
+    return { status: error.status, message: error.message };
+  }
+  return { status: 500, message: 'SERVER_ERROR' };
 };
 
 router.get('/', postController.searchAllPost);
 
-router.get(
-  '/:id',
-  postController.searchOnePost,
-  (error, request, response, next) => {
-    if (error instanceof PostNotFoundError) {
-      response.status(error.status).json({ message: error.message });
-    } else {
-      next();
-    }
-  },
-  globalErrorHandler
-);
+router.get('/:id', postController.searchOnePost, globalPostErrorHandler);
 
 router.post(
   '/',
   upload.single('post-image'),
   postController.writePost,
-  (error, request, response, next) => {
-    if (error instanceof multer.MulterError) {
-      response.status(400).json({ message: 'ONLY_ONE_IMAGE' });
-    } else {
-      next();
-    }
-  },
-  globalErrorHandler
+  globalPostErrorHandler
 );
 
 router.patch(
   '/:id',
   upload.single('post-image'),
   postController.editPost,
-  (error, request, response, next) => {
-    if (error instanceof multer.MulterError) {
-      response.status(400).json({ message: 'ONLY_ONE_IMAGE' });
-    } else if (error instanceof PostNotFoundError) {
-      response.status(error.status).json({ message: error.message });
-    } else {
-      next();
-    }
-  },
-  globalErrorHandler
+  globalPostErrorHandler
 );
 
-router.delete(
-  '/:id',
-  postController.deletePost,
-  (error, request, response, next) => {
-    if (error instanceof PostNotFoundError) {
-      response.status(error.status).json({ message: error.message });
-    } else {
-      next();
-    }
-  },
-  globalErrorHandler
-);
+router.delete('/:id', postController.deletePost, globalPostErrorHandler);
 
 // 댓글 라우터 등록
 router.use('/:postId/comments', commentRouter);
