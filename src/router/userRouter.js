@@ -1,22 +1,16 @@
 const express = require('express');
-const multer = require('multer');
 
 const UserController = require('../controller/UserController');
 
+const validateProfileImage = require('./validate/validateProfileImage');
+
+const InvalidProfileImageError = require('../error/InvalidProfileImageError');
 const UserNotFoundError = require('../error/UserNotFoundError');
 const DuplicateNicknameError = require('../error/DuplicateNicknameError');
 
 const userController = new UserController();
 
 const router = express.Router();
-
-const storage = multer.diskStorage({
-  filename: (request, file, callback) => {
-    callback(null, file.originalname);
-  },
-});
-
-const upload = multer({ storage });
 
 const globalCommentErrorHandler = (error, request, response, next) => {
   const { status, message } = getErrorDetails(error);
@@ -25,9 +19,8 @@ const globalCommentErrorHandler = (error, request, response, next) => {
 };
 
 const getErrorDetails = (error) => {
-  if (error instanceof multer.MulterError) {
-    return { status: 400, message: 'ONLY_ONE_IMAGE' };
-  } else if (
+  if (
+    error instanceof InvalidProfileImageError ||
     error instanceof UserNotFoundError ||
     error instanceof DuplicateNicknameError
   ) {
@@ -41,7 +34,7 @@ const getErrorDetails = (error) => {
 
 router.patch(
   '/profile-image-and-nickname',
-  upload.single('profile-image'),
+  validateProfileImage,
   userController.updateUserProfileImageAndNickname,
   globalCommentErrorHandler
 );

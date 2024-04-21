@@ -1,11 +1,12 @@
 const express = require('express');
-const multer = require('multer');
 
 const SignUpController = require('../controller/SignUpController');
 
+const validateProfileImage = require('./validate/validateProfileImage');
 const validateEmail = require('./validate/validateEmail');
 const validatePassword = require('./validate/validatePassword');
 
+const InvalidProfileImageError = require('../error/InvalidProfileImageError');
 const InvalidEmailError = require('../error/InvalidEmailError');
 const InvalidPasswordError = require('../error/InvalidPasswordError');
 const DuplicateEmailError = require('../error/DuplicateEmailError');
@@ -15,14 +16,6 @@ const signUpController = new SignUpController();
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  filename: (request, file, callback) => {
-    callback(null, file.originalname);
-  },
-});
-
-const upload = multer({ storage });
-
 const globalPostErrorHandler = (error, request, response, next) => {
   const { status, message } = getErrorDetails(error);
 
@@ -30,9 +23,8 @@ const globalPostErrorHandler = (error, request, response, next) => {
 };
 
 const getErrorDetails = (error) => {
-  if (error instanceof multer.MulterError) {
-    return { status: 400, message: 'ONLY_ONE_IMAGE' };
-  } else if (
+  if (
+    error instanceof InvalidProfileImageError ||
     error instanceof InvalidEmailError ||
     error instanceof InvalidPasswordError ||
     error instanceof DuplicateEmailError ||
@@ -46,10 +38,9 @@ const getErrorDetails = (error) => {
   return { status: 500, message: 'SERVER_ERROR' };
 };
 
-// TODO 이미지가 없는 경우 에러 처리 필요
 router.post(
   '/',
-  upload.single('profile-image'),
+  validateProfileImage,
   validateEmail,
   validatePassword,
   signUpController.signUp,
