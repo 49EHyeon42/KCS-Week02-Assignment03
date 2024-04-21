@@ -88,4 +88,4 @@ class CommentRepository {
   }
 }
 
-module.exports = PostRepository;
+module.exports = CommentRepository;
