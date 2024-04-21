@@ -12,7 +12,6 @@ const userController = new UserController();
 
 const router = express.Router();
 
-// TODO 닉네임 유효성 검사 추가
 router.patch(
   '/profile-image-and-nickname',
   validateProfileImage,

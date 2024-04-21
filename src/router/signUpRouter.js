@@ -13,7 +13,6 @@ const signUpController = new SignUpController();
 
 const router = express.Router();
 
-// TODO 닉네임 유효성 검사 필요
 router.post(
   '/',
   validateProfileImage,
