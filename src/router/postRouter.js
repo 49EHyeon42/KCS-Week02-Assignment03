@@ -19,7 +19,6 @@ router.get('/:id', postController.searchOnePost, postErrorHandler);
 
 router.post(
   '/',
-  validatePostImage,
   validateTitle,
   validateContent,
   postController.writePost,
