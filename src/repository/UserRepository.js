@@ -53,7 +53,6 @@ class UserRepository {
     fs.writeFileSync(this._USER_JSON_PATH, JSON.stringify(userJson, null, 2));
   }
 
-  // TODO: 이미지가 없는 경우, 에러 처리 필요
   updateUserProfileImageAndNicknameById(id, profileImage, nickname) {
     const userJson = JSON.parse(fs.readFileSync(this._USER_JSON_PATH));
 
@@ -97,16 +96,18 @@ class UserRepository {
   deleteUserById(id) {
     const userJson = JSON.parse(fs.readFileSync(this._USER_JSON_PATH));
 
-    const foundUser = userJson.users.find((user) => user.id == id);
+    const foundUserId = userJson.users.findIndex((user) => user.id == id);
 
-    if (!foundUser) {
+    if (foundUserId === -1) {
       throw new UserNotFoundError();
     }
 
-    // 기존 프로필 이미지 삭제
-    fs.unlinkSync(userJson.profileImagePath);
+    const foundUser = userJson.users[foundUserId];
 
-    userJson.users.splice(foundUser, 1);
+    // 기존 프로필 이미지 삭제
+    fs.unlinkSync(foundUser.profileImagePath);
+
+    userJson.users.splice(foundUserId, 1);
 
     fs.writeFileSync(this._USER_JSON_PATH, JSON.stringify(userJson, null, 2));
   }
