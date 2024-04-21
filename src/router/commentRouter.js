@@ -26,12 +26,8 @@ router.get('/', commentController.searchComment, globalCommentErrorHandler);
 
 router.post('/', commentController.writeComment, globalCommentErrorHandler);
 
-router.patch('/:id', commentController.editComment, globalCommentErrorHandler);
+router.patch('/', commentController.editComment, globalCommentErrorHandler);
 
-router.delete(
-  '/:id',
-  commentController.deleteComment,
-  globalCommentErrorHandler
-);
+router.delete('/', commentController.deleteComment, globalCommentErrorHandler);
 
 module.exports = router;

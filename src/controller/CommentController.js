@@ -17,14 +17,11 @@ class CommentController {
 
   writeComment = (request, response, next) => {
     const postId = request.params.postId;
+    // 사용자 인증이 없음으로 author는 나중에 구현
     const { content } = request.body;
 
     try {
-      this._commentRepository.saveComment(
-        request.params.postId,
-        'Test',
-        content
-      );
+      this._commentRepository.saveComment(postId, 'Test', content);
 
       response.sendStatus(200);
     } catch (error) {
@@ -53,7 +50,9 @@ class CommentController {
       this._commentRepository.deleteCommentByIdAndPostId(id, postId);
 
       response.sendStatus(200);
-    } catch (error) {}
+    } catch (error) {
+      next(error);
+    }
   };
 }
 

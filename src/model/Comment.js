@@ -29,6 +29,7 @@ class Comment {
   toJson() {
     return {
       id: this._id,
+      postId: this._postId,
       author: this._author,
       content: this._content,
     };
