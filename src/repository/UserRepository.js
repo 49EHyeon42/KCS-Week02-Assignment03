@@ -32,13 +32,13 @@ class UserRepository {
     // 닉네임 중복 확인
     this._checkDuplicateNickname(nickname);
 
-    // 프로필 사진 저장
-    const profileImagePath = `${this._PROFILE_IMAGE_PATH}${email}${path.extname(profileImage.originalname)}`;
-
-    fs.renameSync(profileImage.path, profileImagePath);
-
     // 회원 정보 저장
     const userJson = JSON.parse(fs.readFileSync(this._USER_JSON_PATH));
+
+    // 프로필 사진 저장
+    const profileImagePath = `${this._PROFILE_IMAGE_PATH}${userJson.sequence}${path.extname(profileImage.originalname)}`;
+
+    fs.renameSync(profileImage.path, profileImagePath);
 
     userJson.users.push(
       new User(
