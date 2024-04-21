@@ -4,7 +4,6 @@ const multer = require('multer');
 const UserController = require('../controller/UserController');
 
 const UserNotFoundError = require('../error/UserNotFoundError');
-const DuplicateEmailError = require('../error/DuplicateEmailError');
 const DuplicateNicknameError = require('../error/DuplicateNicknameError');
 
 const userController = new UserController();
@@ -28,7 +27,6 @@ const globalCommentErrorHandler = (error, request, response, next) => {
 const getErrorDetails = (error) => {
   if (
     error instanceof UserNotFoundError ||
-    error instanceof DuplicateEmailError ||
     error instanceof DuplicateNicknameError
   ) {
     return { status: error.status, message: error.message };
