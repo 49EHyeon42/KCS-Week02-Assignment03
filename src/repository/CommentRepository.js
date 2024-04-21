@@ -56,7 +56,7 @@ class CommentRepository {
     );
   }
 
-  deleteCommentByIdAndPostID(id, postId) {
+  deleteCommentByIdAndPostId(id, postId) {
     this._checkPostByPostId(postId);
 
     const commentJson = JSON.parse(fs.readFileSync(this._COMMENT_JSON_PATH));
