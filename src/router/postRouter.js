@@ -3,8 +3,10 @@ const express = require('express');
 const PostController = require('../controller/PostController');
 
 const validatePostImage = require('./validate/validatePostImage');
+const validateTitle = require('./validate/validateTitle');
 
 const InvalidPostImageError = require('../error/InvalidPostImageError');
+const InvalidTitleError = require('../error/InvalidTitleError');
 const PostNotFoundError = require('../error/PostNotFoundError');
 
 const postController = new PostController();
@@ -21,6 +23,7 @@ const globalPostErrorHandler = (error, request, response, next) => {
 const getErrorDetails = (error) => {
   if (
     error instanceof InvalidPostImageError ||
+    error instanceof InvalidTitleError ||
     error instanceof PostNotFoundError
   ) {
     return { status: error.status, message: error.message };
@@ -38,6 +41,7 @@ router.get('/:id', postController.searchOnePost, globalPostErrorHandler);
 router.post(
   '/',
   validatePostImage,
+  validateTitle,
   postController.writePost,
   globalPostErrorHandler
 );
@@ -45,6 +49,7 @@ router.post(
 router.patch(
   '/:id',
   validatePostImage,
+  validateTitle,
   postController.editPost,
   globalPostErrorHandler
 );
