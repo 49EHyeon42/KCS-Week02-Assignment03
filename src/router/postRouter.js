@@ -6,40 +6,16 @@ const validatePostImage = require('./validate/validatePostImage');
 const validateTitle = require('./validate/validateTitle');
 const validateContent = require('./validate/validateContent');
 
-const InvalidPostImageError = require('../error/InvalidPostImageError');
-const InvalidTitleError = require('../error/InvalidTitleError');
-const InvalidContentError = require('../error/InvalidContentError');
-const PostNotFoundError = require('../error/PostNotFoundError');
+const postErrorHandler = require('./errorhandler/postErrorHandler');
 
 const postController = new PostController();
 
 const router = express.Router();
 const commentRouter = require('./commentRouter');
 
-const globalPostErrorHandler = (error, request, response, next) => {
-  const { status, message } = getErrorDetails(error);
-
-  response.status(status).json({ message });
-};
-
-const getErrorDetails = (error) => {
-  if (
-    error instanceof InvalidPostImageError ||
-    error instanceof InvalidTitleError ||
-    error instanceof InvalidContentError ||
-    error instanceof PostNotFoundError
-  ) {
-    return { status: error.status, message: error.message };
-  }
-
-  console.error(error);
-
-  return { status: 500, message: 'SERVER_ERROR' };
-};
-
 router.get('/', postController.searchAllPost);
 
-router.get('/:id', postController.searchOnePost, globalPostErrorHandler);
+router.get('/:id', postController.searchOnePost, postErrorHandler);
 
 router.post(
   '/',
@@ -47,7 +23,7 @@ router.post(
   validateTitle,
   validateContent,
   postController.writePost,
-  globalPostErrorHandler
+  postErrorHandler
 );
 
 router.patch(
@@ -56,10 +32,10 @@ router.patch(
   validateTitle,
   validateContent,
   postController.editPost,
-  globalPostErrorHandler
+  postErrorHandler
 );
 
-router.delete('/:id', postController.deletePost, globalPostErrorHandler);
+router.delete('/:id', postController.deletePost, postErrorHandler);
 
 // 댓글 라우터 등록
 router.use('/:postId/comments', commentRouter);
