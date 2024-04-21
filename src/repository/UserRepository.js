@@ -82,7 +82,7 @@ class UserRepository {
     fs.writeFileSync(this._USER_JSON_PATH, JSON.stringify(userJson, null, 2));
   }
 
-  deleteUserById() {
+  deleteUserById(id) {
     const userJson = JSON.parse(fs.readFileSync(this._USER_JSON_PATH));
 
     const foundUser = userJson.users.find((user) => user.id == id);
