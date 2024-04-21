@@ -9,29 +9,32 @@ const UserNotFoundError = require('../error/UserNotFoundError');
 
 const signInController = new SignInController();
 
-// TODO 에러 핸들러 수정
-const errorHandler = (error, request, response, next) => {
-  let status;
-  let message;
+const globalPostErrorHandler = (error, request, response, next) => {
+  const { status, message } = getErrorDetails(error);
 
+  response.status(status).json({ message });
+};
+
+const getErrorDetails = (error) => {
   if (
     error instanceof InvalidEmailError ||
     error instanceof UserNotFoundError
   ) {
-    status = error.status;
-    message = error.message;
-  } else {
-    status = 500;
-    message = 'SERVER_ERROR';
+    return { status: error.status, message: error.message };
   }
 
-  console.log(error);
+  console.error(error);
 
-  response.status(status).json({ message: message });
+  return { status: 500, message: 'SERVER_ERROR' };
 };
 
 const router = express.Router();
 
-router.post('/', validateEmail, signInController.signIn, errorHandler);
+router.post(
+  '/',
+  validateEmail,
+  signInController.signIn,
+  globalPostErrorHandler
+);
 
 module.exports = router;

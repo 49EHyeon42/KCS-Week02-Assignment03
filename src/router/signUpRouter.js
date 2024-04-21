@@ -7,6 +7,7 @@ const validateEmail = require('./validate/validateEmail');
 
 const InvalidEmailError = require('../error/InvalidEmailError');
 const DuplicateEmailError = require('../error/DuplicateEmailError');
+const DuplicateNicknameError = require('../error/DuplicateNicknameError');
 
 const signUpController = new SignUpController();
 
@@ -20,35 +21,36 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// TODO 에러 핸들러 수정
-const errorHandler = (error, request, response, next) => {
-  let status;
-  let message;
+const globalPostErrorHandler = (error, request, response, next) => {
+  const { status, message } = getErrorDetails(error);
 
-  if (error instanceof multer.MulterError) {
-    status = 400;
-    message = 'ONLY_ONE_IMAGE';
-  } else if (
-    error instanceof InvalidEmailError ||
-    error instanceof DuplicateEmailError
-  ) {
-    status = error.status;
-    message = error.message;
-  } else {
-    status = 500;
-    message = 'SERVER_ERROR';
-  }
-
-  response.status(status).json({ message: message });
+  response.status(status).json({ message });
 };
 
-// TODO 유효성 검사 나중에 구현
+const getErrorDetails = (error) => {
+  if (error instanceof multer.MulterError) {
+    return { status: 400, message: 'ONLY_ONE_IMAGE' };
+  } else if (
+    error instanceof InvalidEmailError ||
+    error instanceof DuplicateEmailError ||
+    error instanceof DuplicateNicknameError
+  ) {
+    return { status: error.status, message: error.message };
+  }
+
+  console.error(error);
+
+  return { status: 500, message: 'SERVER_ERROR' };
+};
+
+// TODO 비밀번호 유효성 검사 구현
+// TODO 이미지가 없는 경우 에러 처리 필요
 router.post(
   '/',
   upload.single('profile-image'),
   validateEmail,
   signUpController.signUp,
-  errorHandler
+  globalPostErrorHandler
 );
 
 module.exports = router;
