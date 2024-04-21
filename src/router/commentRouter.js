@@ -10,22 +10,16 @@ const commentController = new CommentController();
 const router = express.Router({ mergeParams: true });
 
 const globalCommentErrorHandler = (error, request, response, next) => {
-  let status;
-  let message;
+  const { status, message } = getErrorDetails(error);
 
-  // 코드 중복, 마음에 안듬
-  if (error instanceof PostNotFoundError) {
-    status = error.status;
-    message = error.message;
-  } else if (error instanceof CommentNotFoundError) {
-    status = error.status;
-    message = error.message;
-  } else {
-    status = 500;
-    message = 'SERVER_ERROR';
-  }
+  response.status(status).json({ message });
+};
 
-  response.status(status).json({ message: message });
+const getErrorDetails = (error) => {
+  return error instanceof PostNotFoundError ||
+    error instanceof CommentNotFoundError
+    ? { status: error.status, message: error.message }
+    : { status: 500, message: 'SERVER_ERROR' };
 };
 
 router.get('/', commentController.searchComment, globalCommentErrorHandler);
